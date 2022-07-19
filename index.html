@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="icon" href="data:,">
+    <title>ascii canvas test</title>
+
+  <style>
+      body{
+      background-color: #666666;
+    }
+    canvas {
+      /*width: 100%;*/
+      image-rendering: pixelated;
+    }
+  </style>
+  </head>
+
+
+  <body>
+
+    <script>
+      const tileSize = 16;  //tile size in pixels
+      const xScreen = 3; // width in default tiles
+      const yScreen = 3; // height in default tiles
+      const fontName = "CGA";
+      
+      function renderScreen(){
+        let fontUrl = "Web437_IBM_CGA.woff";
+        let gameFont = new FontFace(fontName, "url("+fontUrl+")");    
+        
+        gameFont.load().then(function(font){ 
+            document.fonts.add(font);
+            console.log('Font loaded');
+            setupCanvas();
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            drawChar("@","RGBA(255,255,255,1)",1,1)
+        });
+
+      }
+      function setupCanvas(){
+          canvas = document.createElement("canvas");
+
+          ctx = canvas.getContext("2d");
+          
+          canvas.width = tileSize*xScreen;
+          canvas.height = tileSize*yScreen;
+
+          canvas.style.outline = "1px solid #ffffff";
+          canvas.style.backgroundColor = "#000000";
+
+          document.body.appendChild(canvas);
+
+          ctx.font = tileSize +"px "+fontName;
+          ctx.textBaseline = "top";
+          ctx.imageSmoothingEnabled = false;
+      }
+
+      function drawChar(char,textColor,x,y){
+          ctx.fillStyle = textColor;
+          ctx.fillText(
+              char, 
+              x*tileSize,
+              y*tileSize
+          );
+      }
+      renderScreen()
+      
+    </script>
+  </body>
